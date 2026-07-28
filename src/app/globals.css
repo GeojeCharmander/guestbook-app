@@ -208,13 +208,14 @@ textarea:focus-visible {
   gap: 12px;
 }
 
-.gb-list li {
+.entry-card {
   display: flex;
   gap: 12px;
   background: var(--surface);
   border: 1px solid var(--surface-line);
   border-radius: 16px;
   padding: 13px 15px;
+  animation: card-in 0.35s ease both;
 }
 
 .avatar {
@@ -230,16 +231,27 @@ textarea:focus-visible {
   color: var(--clay-ink);
 }
 
-.gb-list li:nth-child(3n + 1) .avatar {
+.entry-card[data-tone="clay"] .avatar {
   background: var(--clay);
 }
 
-.gb-list li:nth-child(3n + 2) .avatar {
+.entry-card[data-tone="sage"] .avatar {
   background: var(--sage);
 }
 
-.gb-list li:nth-child(3n + 3) .avatar {
+.entry-card[data-tone="mix"] .avatar {
   background: color-mix(in srgb, var(--clay) 55%, var(--sage) 45%);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .entry {
@@ -277,8 +289,133 @@ textarea:focus-visible {
   padding: 24px 0;
 }
 
+.entry-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--surface-line);
+  background: var(--paper);
+  color: var(--ink-muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.like-btn:hover {
+  border-color: var(--clay);
+}
+
+.like-btn:disabled {
+  cursor: default;
+}
+
+.like-heart {
+  font-size: 13px;
+  transition: transform 0.2s ease;
+}
+
+.like-btn.is-liked {
+  color: var(--clay-deep);
+  border-color: var(--clay);
+}
+
+.like-btn.is-liked .like-heart {
+  color: var(--clay);
+  animation: heart-pop 0.35s ease;
+}
+
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-left: auto;
+  border: 1px solid var(--surface-line);
+  background: var(--paper);
+  color: var(--ink-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.delete-btn:hover {
+  border-color: var(--clay-deep);
+  color: var(--clay-deep);
+}
+
+.confirm-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 6px 4px 2px;
+  font-size: 12.5px;
+  color: var(--clay-deep);
+  animation: card-in 0.2s ease both;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+
+.confirm-cancel,
+.confirm-delete {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  border: 1px solid var(--surface-line);
+}
+
+.confirm-cancel {
+  background: var(--paper);
+  color: var(--ink-muted);
+}
+
+.confirm-delete {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: var(--clay-ink);
+}
+
+.confirm-delete:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
+    animation: none !important;
   }
 }
