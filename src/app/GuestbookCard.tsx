@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { hasLikedPost, setPostLiked } from "@/lib/visitor";
+import { adminDeletePost } from "@/app/actions/admin";
+import { useAdmin } from "./AdminProvider";
 import type { GuestbookEntry } from "@/lib/entries";
 
 function formatDate(iso: string) {
@@ -39,35 +42,58 @@ type Props = {
 };
 
 export default function GuestbookCard({ entry, isMine, visitorToken, onDeleted }: Props) {
+  const { isAdmin, password } = useAdmin();
   const [likes, setLikes] = useState(entry.likes);
   const [liked, setLiked] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+  useEffect(() => {
+    setLiked(hasLikedPost(entry.id));
+  }, [entry.id]);
+
   async function handleLike() {
-    if (liked) return;
-    setLiked(true);
-    setLikes((n) => n + 1);
-    const { error } = await supabase.rpc("increment_post_likes", { post_id: entry.id });
+    const next = !liked;
+    setLiked(next);
+    setLikes((n) => (next ? n + 1 : Math.max(n - 1, 0)));
+    setPostLiked(entry.id, next);
+
+    const { error } = await supabase.rpc(
+      next ? "increment_post_likes" : "decrement_post_likes",
+      { post_id: entry.id }
+    );
     if (error) {
-      setLiked(false);
-      setLikes((n) => n - 1);
+      setLiked(!next);
+      setLikes((n) => (next ? n - 1 : n + 1));
+      setPostLiked(entry.id, !next);
     }
   }
 
   async function handleDelete() {
     setDeleting(true);
-    const { data, error } = await supabase.rpc("delete_post", {
-      post_id: entry.id,
-      token: visitorToken,
-    });
-    if (!error && data) {
-      onDeleted(entry.id);
-    } else {
-      setDeleting(false);
-      setConfirming(false);
+
+    if (isMine) {
+      const { data, error } = await supabase.rpc("delete_post", {
+        post_id: entry.id,
+        token: visitorToken,
+      });
+      if (!error && data) {
+        onDeleted(entry.id);
+        return;
+      }
+    } else if (isAdmin) {
+      const result = await adminDeletePost(entry.id, password);
+      if (result.ok) {
+        onDeleted(entry.id);
+        return;
+      }
     }
+
+    setDeleting(false);
+    setConfirming(false);
   }
+
+  const canDelete = isMine || isAdmin;
 
   return (
     <li className="entry-card" data-tone={avatarTone(entry.name)}>
@@ -102,20 +128,19 @@ export default function GuestbookCard({ entry, isMine, visitorToken, onDeleted }
               type="button"
               className={`like-btn${liked ? " is-liked" : ""}`}
               onClick={handleLike}
-              disabled={liked}
-              aria-label="좋아요"
+              aria-label={liked ? "좋아요 취소" : "좋아요"}
             >
               <span className="like-heart" aria-hidden="true">
                 ♥
               </span>
               <span>{likes}</span>
             </button>
-            {isMine && (
+            {canDelete && (
               <button
                 type="button"
                 className="delete-btn"
                 onClick={() => setConfirming(true)}
-                aria-label="내 글 삭제"
+                aria-label={isMine ? "내 글 삭제" : "관리자 삭제"}
               >
                 <TrashIcon />
               </button>

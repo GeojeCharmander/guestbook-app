@@ -30,6 +30,36 @@
   }
 }
 
+:root[data-theme="light"] {
+  --paper: #f3ead8;
+  --surface: #fbf6ea;
+  --surface-line: #e4d5bc;
+  --ink: #3b2e25;
+  --ink-muted: #8b7a68;
+  --clay: #c97b5d;
+  --clay-deep: #a85940;
+  --clay-ink: #fbf3ea;
+  --sage: #7e9169;
+  --ring: rgba(201, 123, 93, 0.35);
+  --shadow: rgba(59, 46, 37, 0.14);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #221912;
+  --surface: #2b2019;
+  --surface-line: #47372a;
+  --ink: #f1e6d8;
+  --ink-muted: #b9a88f;
+  --clay: #e4936e;
+  --clay-deep: #c97b5d;
+  --clay-ink: #241a13;
+  --sage: #9bb185;
+  --ring: rgba(228, 147, 110, 0.4);
+  --shadow: rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -66,6 +96,85 @@ a {
 .card {
   width: 100%;
   max-width: 420px;
+  position: relative;
+}
+
+.toolbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--surface-line);
+  background: var(--surface);
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.toolbar-btn:hover {
+  border-color: var(--clay);
+  color: var(--clay-deep);
+}
+
+.toolbar-btn.is-admin {
+  width: auto;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--clay-deep);
+  border-color: var(--clay);
+  background: color-mix(in srgb, var(--clay) 12%, var(--surface));
+}
+
+.admin-popover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--surface-line);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 8px 24px -8px var(--shadow);
+}
+
+.admin-popover input {
+  width: 160px;
+  font-size: 13px;
+  padding: 8px 10px;
+}
+
+.admin-popover button {
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--clay);
+  color: var(--clay-ink);
+  cursor: pointer;
+}
+
+.admin-error {
+  font-size: 11.5px;
+  color: var(--clay-deep);
+  margin: 0;
 }
 
 .gb-header {
