@@ -10,6 +10,13 @@
   --sage: #7e9169;
   --ring: rgba(201, 123, 93, 0.35);
   --shadow: rgba(59, 46, 37, 0.14);
+  --sky-a: #fbeacf;
+  --sky-b: #f3a765;
+  --sky-c: #d9622f;
+  --sky-d: #7a2c33;
+  --sky-e: #2c1420;
+  --grass: #1c0f07;
+  --sun-glow: rgba(255, 226, 158, 0.85);
   color-scheme: light;
 }
 
@@ -26,6 +33,13 @@
     --sage: #9bb185;
     --ring: rgba(228, 147, 110, 0.4);
     --shadow: rgba(0, 0, 0, 0.45);
+    --sky-a: #e3c48a;
+    --sky-b: #c9793f;
+    --sky-c: #93381f;
+    --sky-d: #46161f;
+    --sky-e: #170a10;
+    --grass: #0d0704;
+    --sun-glow: rgba(233, 175, 108, 0.5);
     color-scheme: dark;
   }
 }
@@ -42,6 +56,13 @@
   --sage: #7e9169;
   --ring: rgba(201, 123, 93, 0.35);
   --shadow: rgba(59, 46, 37, 0.14);
+  --sky-a: #fbeacf;
+  --sky-b: #f3a765;
+  --sky-c: #d9622f;
+  --sky-d: #7a2c33;
+  --sky-e: #2c1420;
+  --grass: #1c0f07;
+  --sun-glow: rgba(255, 226, 158, 0.85);
   color-scheme: light;
 }
 
@@ -57,6 +78,13 @@
   --sage: #9bb185;
   --ring: rgba(228, 147, 110, 0.4);
   --shadow: rgba(0, 0, 0, 0.45);
+  --sky-a: #e3c48a;
+  --sky-b: #c9793f;
+  --sky-c: #93381f;
+  --sky-d: #46161f;
+  --sky-e: #170a10;
+  --grass: #0d0704;
+  --sun-glow: rgba(233, 175, 108, 0.5);
   color-scheme: dark;
 }
 
@@ -87,16 +115,57 @@ a {
 }
 
 .page {
+  position: relative;
   min-height: 100%;
   display: flex;
   justify-content: center;
   padding: 48px 20px 80px;
+  overflow-x: hidden;
+}
+
+.scenery {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--sun-glow), transparent 70%) 50% 60% / 380px 380px
+      no-repeat,
+    linear-gradient(
+      180deg,
+      var(--sky-e) 0%,
+      var(--sky-d) 26%,
+      var(--sky-c) 50%,
+      var(--sky-b) 72%,
+      var(--sky-a) 100%
+    );
+}
+
+.grass {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform-origin: bottom center;
+  clip-path: polygon(50% 0%, 62% 55%, 56% 100%, 44% 100%, 38% 55%);
+  background: var(--grass);
+  animation: sway ease-in-out infinite;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
 }
 
 .card {
   width: 100%;
   max-width: 420px;
   position: relative;
+  z-index: 1;
 }
 
 .toolbar {
@@ -180,6 +249,14 @@ a {
 .gb-header {
   text-align: center;
   margin-bottom: 24px;
+}
+
+.gb-header .mark,
+.gb-header h1,
+.gb-header p,
+.divider,
+.empty {
+  text-shadow: 0 0 10px var(--paper), 0 0 22px var(--paper);
 }
 
 .gb-header .mark {

@@ -4,6 +4,7 @@ import AdminToggle from "./AdminToggle";
 import ThemeToggle from "./ThemeToggle";
 import GuestbookForm from "./GuestbookForm";
 import GuestbookList from "./GuestbookList";
+import Scenery from "./Scenery";
 
 export default async function Home() {
   const entries = await getEntries();
@@ -11,6 +12,7 @@ export default async function Home() {
   return (
     <AdminProvider>
       <main className="page">
+        <Scenery />
         <div className="card">
           <div className="toolbar">
             <ThemeToggle />
