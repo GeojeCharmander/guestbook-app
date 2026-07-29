@@ -268,7 +268,8 @@ a {
 .gb-header p,
 .divider,
 .empty {
-  text-shadow: 0 0 10px var(--paper), 0 0 22px var(--paper);
+  text-shadow: 0 0 3px var(--paper), 0 0 3px var(--paper), 0 0 10px var(--paper),
+    0 0 22px var(--paper);
 }
 
 .gb-header .mark {
@@ -289,7 +290,7 @@ a {
 .gb-header p {
   margin: 0;
   font-size: 14px;
-  color: var(--ink-muted);
+  color: var(--ink);
 }
 
 .gb-form {
@@ -383,7 +384,7 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--ink-muted);
+  color: var(--ink);
   font-size: 12px;
   font-weight: 600;
   margin-bottom: 14px;
@@ -482,7 +483,7 @@ textarea:focus-visible {
 
 .empty {
   text-align: center;
-  color: var(--ink-muted);
+  color: var(--ink);
   font-size: 14px;
   padding: 24px 0;
 }
