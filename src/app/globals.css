@@ -17,6 +17,7 @@
   --sky-e: #2c1420;
   --grass: #1c0f07;
   --sun-glow: rgba(255, 226, 158, 0.85);
+  --sun-core: #fff6df;
   color-scheme: light;
 }
 
@@ -40,6 +41,7 @@
     --sky-e: #170a10;
     --grass: #0d0704;
     --sun-glow: rgba(233, 175, 108, 0.5);
+    --sun-core: #f3ddab;
     color-scheme: dark;
   }
 }
@@ -63,6 +65,7 @@
   --sky-e: #2c1420;
   --grass: #1c0f07;
   --sun-glow: rgba(255, 226, 158, 0.85);
+  --sun-core: #fff6df;
   color-scheme: light;
 }
 
@@ -85,6 +88,7 @@
   --sky-e: #170a10;
   --grass: #0d0704;
   --sun-glow: rgba(233, 175, 108, 0.5);
+  --sun-core: #f3ddab;
   color-scheme: dark;
 }
 
@@ -129,36 +133,44 @@ a {
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: radial-gradient(closest-side, var(--sun-glow), transparent 70%) 50% 60% / 380px 380px
-      no-repeat,
-    linear-gradient(
-      180deg,
-      var(--sky-e) 0%,
-      var(--sky-d) 26%,
-      var(--sky-c) 50%,
-      var(--sky-b) 72%,
-      var(--sky-a) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    var(--sky-e) 0%,
+    var(--sky-d) 26%,
+    var(--sky-c) 50%,
+    var(--sky-b) 72%,
+    var(--sky-a) 100%
+  );
 }
 
-.grass {
+.clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32%;
+}
+
+.cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(10, 4, 2, 0.55), rgba(10, 4, 2, 0) 72%);
+  filter: blur(1px);
+}
+
+.horizon-scene {
   position: absolute;
   left: 0;
+  right: 0;
   bottom: 0;
-  transform-origin: bottom center;
-  clip-path: polygon(50% 0%, 62% 55%, 56% 100%, 44% 100%, 38% 55%);
-  background: var(--grass);
-  animation: sway ease-in-out infinite;
+  height: 46vh;
+  min-height: 320px;
 }
 
-@keyframes sway {
-  0%,
-  100% {
-    transform: rotate(-4deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
+.horizon-scene svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .card {
