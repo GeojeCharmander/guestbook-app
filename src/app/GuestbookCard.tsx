@@ -7,9 +7,17 @@ import { adminDeletePost } from "@/app/actions/admin";
 import { useAdmin } from "./AdminProvider";
 import type { GuestbookEntry } from "@/lib/entries";
 
-function formatDate(iso: string) {
-  const d = new Date(iso);
-  return `${d.getMonth() + 1}.${d.getDate()}`;
+function formatDateTime(iso: string) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Seoul",
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date(iso));
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("month")}.${get("day")} ${get("hour")}:${get("minute")}`;
 }
 
 const AVATAR_TONES = ["clay", "sage", "mix"] as const;
@@ -101,7 +109,7 @@ export default function GuestbookCard({ entry, isMine, visitorToken, onDeleted }
       <div className="entry">
         <div className="row-top">
           <b>{entry.name}</b>
-          <time>{formatDate(entry.createdAt)}</time>
+          <time dateTime={entry.createdAt}>{formatDateTime(entry.createdAt)}</time>
         </div>
         <p>{entry.message}</p>
 
