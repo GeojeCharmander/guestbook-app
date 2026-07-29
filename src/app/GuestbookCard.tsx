@@ -93,7 +93,7 @@ export default function GuestbookCard({ entry, isMine, visitorToken, onDeleted }
     setConfirming(false);
   }
 
-  const canDelete = isMine || isAdmin;
+  const canDelete = isAdmin;
 
   return (
     <li className="entry-card" data-tone={avatarTone(entry.name)}>
@@ -140,7 +140,7 @@ export default function GuestbookCard({ entry, isMine, visitorToken, onDeleted }
                 type="button"
                 className="delete-btn"
                 onClick={() => setConfirming(true)}
-                aria-label={isMine ? "내 글 삭제" : "관리자 삭제"}
+                aria-label="관리자 삭제"
               >
                 <TrashIcon />
               </button>

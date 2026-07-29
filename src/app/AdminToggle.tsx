@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { verifyAdminPassword } from "@/app/actions/admin";
 import { useAdmin } from "./AdminProvider";
 
@@ -25,6 +25,22 @@ export default function AdminToggle() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
+  const popoverRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(e: MouseEvent) {
+      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
+        setOpen(false);
+        setPassword("");
+        setError(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, [open]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +67,7 @@ export default function AdminToggle() {
 
   if (open) {
     return (
-      <form className="admin-popover" onSubmit={handleSubmit}>
+      <form ref={popoverRef} className="admin-popover" onSubmit={handleSubmit}>
         <input
           type="password"
           value={password}
